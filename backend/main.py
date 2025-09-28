@@ -4,13 +4,25 @@ from firebase_admin import credentials, auth
 from fastapi import FastAPI, Depends, HTTPException
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from starlette import status
+from pydantic import BaseModel
 
 # Initialize Firebase Admin SDK
-cred = credentials.Certificate(os.getenv("GOOGLE_APPLICATION_CREDENTIALS"))
+cred_path = os.getenv("GOOGLE_APPLICATION_CREDENTIALS")
+if not cred_path:
+    raise ValueError("GOOGLE_APPLICATION_CREDENTIALS environment variable is not set")
+if not os.path.exists(cred_path):
+    raise FileNotFoundError(f"Firebase credentials file not found at: {cred_path}")
+
+cred = credentials.Certificate(cred_path)
 firebase_app = firebase_admin.initialize_app(cred)
 
 app = FastAPI()
 bearer_scheme = HTTPBearer()
+
+
+class ChatRequest(BaseModel):
+    session_id: str
+    message: str
 
 
 # Create a dependency that verifies the Firebase token
