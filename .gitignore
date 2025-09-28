@@ -91,3 +91,6 @@ out/
 *.tmp
 *.temp
 .cache/
+
+
+backend/firebase_credentials.json
