@@ -1,0 +1,8 @@
+fastapi
+uvicorn
+google-adk
+google-generativeai
+psycopg2-binary          # For PostgreSQL
+firebase-admin           # For Firebase
+python-dotenv
+google-cloud-aiplatform
